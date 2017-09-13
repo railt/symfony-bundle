@@ -7,7 +7,7 @@
  */
 declare(strict_types=1);
 
-namespace Railt\Tests\Http;
+namespace Railt\SymfonyBundle\Tests;
 
 use Railt\SymfonyBundle\Http\Request;
 use Railt\Http\RequestInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request as SymfonyNativeRequest;
 
 /**
  * Class SymfonyRequestTestCase
- * @package Railt\Tests\Http
+ * @package Railt\SymfonyBundle\Tests
  */
 class SymfonyRequestTestCase extends AbstractHttpRequestTestCase
 {
