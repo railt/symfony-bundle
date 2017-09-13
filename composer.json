@@ -1,0 +1,48 @@
+{
+    "name": "railt/symfony-bundle",
+    "type": "symfony-bundle",
+    "description": "The Symfony Framework Bundle for Railt.",
+    "license": "MIT",
+    "keywords": [ "graphql", "railt", "symfony", "bundle", "adapter", "bridge" ],
+    "homepage": "http://railt.org",
+    "version": "dev-master",
+    "support": {
+        "issues": "https://github.com/railt/railt/issues",
+        "source": "https://github.com/railt/railt"
+    },
+    "authors": [
+        {
+            "name": "Kirill Nesmeyanov",
+            "email": "nesk@xakep.ru"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "railt/railt": "self.version",
+        "symfony/framework-bundle": "~2.7|~3.0|~4.0",
+        "symfony/console": "~2.7|~3.0|~4.0",
+        "symfony/dependency-injection": "~2.7|~3.0|~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Railt\\SymfonyBundle\\": "src/"
+        }
+    },
+    "require-dev": {
+        "sensio/framework-extra-bundle": "~2.0|~3.0",
+        "phpunit/phpunit": "~6.1",
+        "symfony/yaml": "~2.7|~3.0|~4.0",
+        "symfony/validator": "~2.7|~3.0|~4.0",
+        "symfony/property-info": "~2.8|~3.0|~4.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Railt\\SymfonyBundle\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
