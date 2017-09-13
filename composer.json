@@ -29,11 +29,11 @@
         }
     },
     "require-dev": {
-        "sensio/framework-extra-bundle": "~2.0|~3.0",
         "phpunit/phpunit": "~6.1",
         "symfony/yaml": "~2.7|~3.0|~4.0",
         "symfony/validator": "~2.7|~3.0|~4.0",
-        "symfony/property-info": "~2.8|~3.0|~4.0"
+        "symfony/property-info": "~2.8|~3.0|~4.0",
+        "sensio/framework-extra-bundle": "~2.0|~3.0"
     },
     "autoload-dev": {
         "psr-4": {
