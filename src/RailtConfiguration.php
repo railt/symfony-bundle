@@ -17,8 +17,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class RailtConfiguration implements ConfigurationInterface
 {
+    /**
+     * @var string Example schema file name
+     */
     private const DEFAULT_SCHEMA = __DIR__ . '/Resources/graphql/schema.graphqls';
-    private const DEFAULT_AUTOLOAD_DIRECTORY = __DIR__ . '/Resources/graphql';
 
     /**
      * @var string
@@ -60,7 +62,7 @@ class RailtConfiguration implements ConfigurationInterface
             ->end();
 
             $builder->arrayNode('autoload')
-                ->defaultValue([self::DEFAULT_AUTOLOAD_DIRECTORY])
+                ->defaultValue([])
                 ->prototype('scalar')->end()
             ->end();
 

@@ -26,7 +26,18 @@ app.graphql:
     prefix: /graphql
 ```
 
-Now you have a GraphQL Server located in `http://localhost/graphql`
+> Now you have a GraphQL Server located in `http://localhost/graphql/`
+
+3.1: Or like this:
+```yml
+app.graphql:
+    path: /graphql
+    methods: [ 'GET', 'POST', 'PATCH', 'PUT' ]
+    defaults:
+        _controller: RailtBundle:GraphQL:handle
+```
+
+> Now you have a GraphQL Server located in `http://localhost/graphql`
 
 ## Configuration
 
@@ -35,16 +46,26 @@ You can configure your application:
 ```yml
 railt:
     # Enable or disable the cache and debug mode
+    # - Optional
+    # - Default: %kernel.debug%
     debug: '%kernel.debug%'
-    
+
     # Schema file reference
-    schema: '@RailtBundle/Resources/graphql/schema.graphqls'
-    
+    # - Optional
+    # - Default: '@RailtBundle/Resources/graphql/schema.graphqls'
+    schema: '@YourBundle/Resources/graphql/schema.graphqls'
+
     # Directories where railt will try to load missing type files
+    # - Optional
+    # - Default: []
     autoload:
-        - '@RailtBundle/Resources/graphql/'
-        
+        - '@YourBundle/Resources/graphql/'
+        - '@YourBundle/Resources/graphql/queries/'
+        - '@YourBundle/Resources/graphql/mutations/'
+
     # Names of extensions (string class name)
+    # - Optional
+    # - Default: []
     extensions: 
-        # - Some/Any/Extension
+        - Some/Extension
 ``` 
