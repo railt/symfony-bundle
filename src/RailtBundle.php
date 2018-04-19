@@ -9,20 +9,20 @@ declare(strict_types=1);
 
 namespace Railt\SymfonyBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Class RailtBundle
- * @package Railt\SymfonyBundle
  */
 class RailtBundle extends Bundle
 {
     /**
-     * {@inheritDoc}
+     * @return ExtensionInterface
      */
-    public function build(ContainerBuilder $container)
+    public function getContainerExtension(): ExtensionInterface
     {
-        parent::build($container);
+        return new RailtExtension();
     }
 }

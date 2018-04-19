@@ -15,4 +15,36 @@ The Symfony Framework Bundle for Railt.
 
 ## Installation
 
-> TODO
+> Make sure that you are using at least PHP 7.1
+
+1. `composer require railt/symfony-bundle`
+2. Add the `\Railt\SymfonyBundle\RailtBundle::class` into your bundles list.
+3. Add a GraphQL route, like:
+```yml
+app.graphql:
+    resource: "@RailtBundle/Resources/config/routing.yml"
+    prefix: /graphql
+```
+
+Now you have a GraphQL Server located in `http://localhost/graphql`
+
+## Configuration
+
+You can configure your application:
+
+```yml
+railt:
+    # Enable or disable the cache and debug mode
+    debug: '%kernel.debug%'
+    
+    # Schema file reference
+    schema: '@RailtBundle/Resources/graphql/schema.graphqls'
+    
+    # Directories where railt will try to load missing type files
+    autoload:
+        - '@RailtBundle/Resources/graphql/'
+        
+    # Names of extensions (string class name)
+    extensions: 
+        # - Some/Any/Extension
+``` 

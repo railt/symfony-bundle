@@ -1,0 +1,37 @@
+services:
+    ##############################################################
+    # Register DI Container
+    # ============================================================
+    #
+    # For correct operation of autowiring for methods it is
+    # required to register the DI Container as a Symfony service.
+    #
+    # As a proxy, it is transmitted compatible with the PSR in
+    # order that the controller's methods have access to
+    # the original Symfony services.
+    #
+    ##############################################################
+    Railt\Container\ContainerInterface:
+        alias: Railt\Container\Container
+
+    Railt\Container\Container:
+        arguments:
+            - '@service_container'
+
+    ##############################################################
+    # Register a GraphQL Controller
+    # ============================================================
+    #
+    # TODO Add a description
+    #
+    ##############################################################
+    Railt\SymfonyBundle\Controller\GraphQLController:
+        arguments:
+            - '@Railt\Container\ContainerInterface'
+            - '%railt%'
+
+
+    # Cache
+    Railt\SymfonyBundle\Storage\PSR6StorageBridge:
+        arguments:
+            - '@Psr\Cache\CacheItemPoolInterface'
