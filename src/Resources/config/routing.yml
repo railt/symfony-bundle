@@ -1,0 +1,5 @@
+railt.graphql:
+    path: /
+    methods: [ 'GET', 'POST', 'PATCH', 'PUT' ]
+    defaults:
+        _controller: RailtBundle:GraphQL:handle
