@@ -11,7 +11,7 @@ namespace Railt\SymfonyBundle\Storage;
 
 use Psr\Cache\CacheItemPoolInterface;
 use Railt\Io\Readable;
-use Railt\Reflection\Contracts\Document;
+use Railt\SDL\Contracts\Document;
 use Railt\Storage\Drivers\Psr6Storage;
 
 /**
