@@ -11,14 +11,14 @@ namespace Railt\SymfonyBundle\Controller;
 
 use Railt\Container\ContainerInterface;
 use Railt\Foundation\Application;
+use Railt\Http\Provider\SymfonyProvider;
+use Railt\Http\Request;
 use Railt\Http\RequestInterface;
 use Railt\Http\ResponseInterface;
 use Railt\Io\File;
 use Railt\Io\Readable;
-use Railt\SDL\Reflection\Dictionary;
 use Railt\SDL\Schema\CompilerInterface;
 use Railt\Storage\Storage;
-use Railt\SymfonyBundle\Http\Request;
 use Railt\SymfonyBundle\Storage\PSR6StorageBridge;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request as OriginalRequest;
@@ -31,7 +31,7 @@ class GraphQLController
     private const FILE_EXTENSIONS = [
         '.graphqls',
         '.graphql',
-        '.gql'
+        '.gql',
     ];
 
     /**
@@ -85,6 +85,41 @@ class GraphQLController
     }
 
     /**
+     * @param array $config
+     */
+    private function bootConfig(array $config): void
+    {
+        [
+            'debug'      => $this->debug,
+            'schema'     => $this->schema,
+            'autoload'   => $this->autoload,
+            'extensions' => $this->extensions,
+        ] = $config;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param bool $debug
+     * @return void
+     */
+    private function bootCacheDriver(ContainerInterface $container, bool $debug): void
+    {
+        if (! $debug) {
+            $container->alias(PSR6StorageBridge::class, Storage::class);
+        }
+    }
+
+    /**
+     * @param array $extensions
+     */
+    private function bootExtensions(array $extensions): void
+    {
+        foreach ($extensions as $extension) {
+            $this->app->extend($extension);
+        }
+    }
+
+    /**
      * @param array $directories
      * @throws \Psr\Container\NotFoundExceptionInterface
      * @throws \Psr\Container\ContainerExceptionInterface
@@ -111,38 +146,21 @@ class GraphQLController
     }
 
     /**
-     * @param array $extensions
+     * @param OriginalRequest $symfony
+     * @return mixed
+     * @throws \LogicException
      */
-    private function bootExtensions(array $extensions): void
+    public function handleAction(OriginalRequest $symfony)
     {
-        foreach ($extensions as $extension) {
-            $this->app->extend($extension);
-        }
-    }
+        $request = new Request(new SymfonyProvider($symfony));
 
-    /**
-     * @param ContainerInterface $container
-     * @param bool $debug
-     * @return void
-     */
-    private function bootCacheDriver(ContainerInterface $container, bool $debug): void
-    {
-        if (! $debug) {
-            $container->alias(PSR6StorageBridge::class, Storage::class);
-        }
-    }
+        // Register the http request
+        $this->di->instance(RequestInterface::class, $request);
 
-    /**
-     * @param array $config
-     */
-    private function bootConfig(array $config): void
-    {
-        [
-            'debug'      => $this->debug,
-            'schema'     => $this->schema,
-            'autoload'   => $this->autoload,
-            'extensions' => $this->extensions,
-        ] = $config;
+        /** @var ResponseInterface $response */
+        $response = $this->app->request(File::fromPathname($this->schema), $request);
+
+        return new JsonResponse($response->render(), $response->getStatusCode(), [], true);
     }
 
     /**
@@ -152,23 +170,5 @@ class GraphQLController
     private function isDebug(array $config): bool
     {
         return $config['debug'] ?? false;
-    }
-
-    /**
-     * @param OriginalRequest $symfony
-     * @return mixed
-     * @throws \LogicException
-     */
-    public function handleAction(OriginalRequest $symfony)
-    {
-        $request = new Request($symfony);
-
-        // Register the http request
-        $this->di->instance(RequestInterface::class, $request);
-
-        /** @var ResponseInterface $response */
-        $response = $this->app->request(File::fromPathname($this->schema), $request);
-
-        return new JsonResponse($response->render(), $response->getStatusCode(), [], true);
     }
 }
