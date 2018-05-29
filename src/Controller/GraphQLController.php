@@ -85,6 +85,22 @@ class GraphQLController
     }
 
     /**
+     * @return Application
+     */
+    public function getApplication(): Application
+    {
+        return $this->app;
+    }
+
+    /**
+     * @return Readable
+     */
+    public function getSchema(): Readable
+    {
+        return File::fromPathname($this->schema);
+    }
+
+    /**
      * @param array $config
      */
     private function bootConfig(array $config): void
