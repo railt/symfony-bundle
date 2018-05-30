@@ -61,7 +61,7 @@ trait InteractWithApplication
     /**
      * @return TestRequestInterface
      */
-    protected function symfony(): TestRequestInterface
+    protected function app(): TestRequestInterface
     {
         return $this->appSchema($this->schema, $this->app);
     }

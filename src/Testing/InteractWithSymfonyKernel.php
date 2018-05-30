@@ -34,6 +34,24 @@ trait InteractWithSymfonyKernel
     }
 
     /**
+     * @param string $name
+     * @return object
+     */
+    protected function service(string $name)
+    {
+        return $this->kernel->getContainer()->get($name);
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    protected function parameter(string $name)
+    {
+        return $this->kernel->getContainer()->getParameter($name);
+    }
+
+    /**
      * Shuts the kernel down if it was used in the test.
      */
     private function ensureKernelShutdown(): void
