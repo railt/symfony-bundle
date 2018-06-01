@@ -40,7 +40,7 @@ trait InteractWithApplication
      */
     public function destroyInteractWithApplication(): void
     {
-        $this->factory  = null;
+        $this->factory = null;
     }
 
     /**

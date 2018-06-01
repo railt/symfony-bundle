@@ -42,11 +42,12 @@ class GraphQLController
      */
     public function __construct(ContainerInterface $container, Configurator $config)
     {
-        if ($config->isDebug()) {
+        $this->di = $container;
+
+        if (! $config->isDebug()) {
             $container->alias(PSR6StorageBridge::class, Storage::class);
         }
 
-        $this->di      = $container;
         $this->factory = $config;
     }
 
