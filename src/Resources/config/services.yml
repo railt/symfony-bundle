@@ -11,27 +11,46 @@ services:
     # the original Symfony services.
     #
     ##############################################################
+
+    Railt\Container\Container:
+        arguments: ['@service_container']
+
     Railt\Container\ContainerInterface:
         alias: Railt\Container\Container
 
-    Railt\Container\Container:
-        arguments:
-            - '@service_container'
-
     ##############################################################
-    # Register a GraphQL Controller
+    # Register the Railt Application Configurator
     # ============================================================
     #
     # TODO Add a description
     #
     ##############################################################
+
+    Railt\Io\File:
+        factory: Railt\Io\File::fromPathname
+        arguments: ['%railt.schema%']
+
+    Railt\Io\Readable:
+        alias: Railt\Io\File
+
+    Railt\Foundation\Application\Configurator:
+        calls:
+            - method: setContainer
+              arguments: ['@Railt\Container\ContainerInterface']
+            - method: setDebugMode
+              arguments: ['%railt.debug%']
+            - method: addExtensions
+              arguments: ['%railt.extensions%']
+            - method: addAutoloadPaths
+              arguments: ['%railt.autoload%']
+            - method: setSchema
+              arguments: ['@Railt\Io\Readable']
+
     Railt\SymfonyBundle\Controller\GraphQLController:
         arguments:
             - '@Railt\Container\ContainerInterface'
-            - '%railt%'
+            - '@Railt\Foundation\Application\Configurator'
 
-
-    # Cache
     Railt\SymfonyBundle\Storage\PSR6StorageBridge:
         arguments:
             - '@Psr\Cache\CacheItemPoolInterface'

@@ -10,14 +10,11 @@ declare(strict_types=1);
 namespace Railt\SymfonyBundle\Controller;
 
 use Railt\Container\ContainerInterface;
-use Railt\Foundation\Application;
+use Railt\Foundation\Application\Configurator;
 use Railt\Http\Provider\SymfonyProvider;
 use Railt\Http\Request;
 use Railt\Http\RequestInterface;
 use Railt\Http\ResponseInterface;
-use Railt\Io\File;
-use Railt\Io\Readable;
-use Railt\SDL\Schema\CompilerInterface;
 use Railt\Storage\Storage;
 use Railt\SymfonyBundle\Storage\PSR6StorageBridge;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,137 +25,29 @@ use Symfony\Component\HttpFoundation\Request as OriginalRequest;
  */
 class GraphQLController
 {
-    private const FILE_EXTENSIONS = [
-        '.graphqls',
-        '.graphql',
-        '.gql',
-    ];
-
-    /**
-     * @var Application
-     */
-    private $app;
-
     /**
      * @var ContainerInterface
      */
     private $di;
 
     /**
-     * @var bool
+     * @var Configurator
      */
-    private $debug;
-
-    /**
-     * @var string
-     */
-    private $schema;
-
-    /**
-     * @var array|string[]
-     */
-    private $autoload = [];
-
-    /**
-     * @var array|string[]
-     */
-    private $extensions = [];
+    private $factory;
 
     /**
      * GraphQLController constructor.
      * @param ContainerInterface $container
-     * @param array $config
-     * @throws \Railt\Io\Exception\NotReadableException
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @param Configurator $config
      */
-    public function __construct(ContainerInterface $container, array $config)
+    public function __construct(ContainerInterface $container, Configurator $config)
     {
-        $this->bootConfig($config);
-        $this->bootCacheDriver($container, $this->debug);
-
-        $this->di  = $container;
-        $this->app = new Application($container, $this->debug);
-
-        $this->bootExtensions($this->extensions);
-        $this->bootAutoload($this->autoload);
-    }
-
-    /**
-     * @return Application
-     */
-    public function getApplication(): Application
-    {
-        return $this->app;
-    }
-
-    /**
-     * @return Readable
-     */
-    public function getSchema(): Readable
-    {
-        return File::fromPathname($this->schema);
-    }
-
-    /**
-     * @param array $config
-     */
-    private function bootConfig(array $config): void
-    {
-        [
-            'debug'      => $this->debug,
-            'schema'     => $this->schema,
-            'autoload'   => $this->autoload,
-            'extensions' => $this->extensions,
-        ] = $config;
-    }
-
-    /**
-     * @param ContainerInterface $container
-     * @param bool $debug
-     * @return void
-     */
-    private function bootCacheDriver(ContainerInterface $container, bool $debug): void
-    {
-        if (! $debug) {
+        if ($config->isDebug()) {
             $container->alias(PSR6StorageBridge::class, Storage::class);
         }
-    }
 
-    /**
-     * @param array $extensions
-     */
-    private function bootExtensions(array $extensions): void
-    {
-        foreach ($extensions as $extension) {
-            $this->app->extend($extension);
-        }
-    }
-
-    /**
-     * @param array $directories
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Railt\Io\Exception\NotReadableException
-     */
-    private function bootAutoload(array $directories): void
-    {
-        /** @var CompilerInterface $compiler */
-        $compiler = $this->di->get(CompilerInterface::class);
-
-        $compiler->autoload(function (string $type) use ($directories): ?Readable {
-            foreach (self::FILE_EXTENSIONS as $ext) {
-                foreach ($directories as $dir) {
-                    $pathName = $dir . '/' . $type . $ext;
-
-                    if (\is_file($pathName)) {
-                        return File::fromPathname($pathName);
-                    }
-                }
-            }
-
-            return null;
-        });
+        $this->di      = $container;
+        $this->factory = $config;
     }
 
     /**
@@ -174,17 +63,8 @@ class GraphQLController
         $this->di->instance(RequestInterface::class, $request);
 
         /** @var ResponseInterface $response */
-        $response = $this->app->request(File::fromPathname($this->schema), $request);
+        $response = $this->factory->request($request);
 
         return new JsonResponse($response->render(), $response->getStatusCode(), [], true);
-    }
-
-    /**
-     * @param array $config
-     * @return bool
-     */
-    private function isDebug(array $config): bool
-    {
-        return $config['debug'] ?? false;
     }
 }

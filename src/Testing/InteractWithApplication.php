@@ -10,10 +10,7 @@ declare(strict_types=1);
 namespace Railt\SymfonyBundle\Testing;
 
 use Railt\Foundation\Application;
-use Railt\Io\Readable;
-use Railt\SymfonyBundle\Controller\GraphQLController;
 use Railt\Testing\TestRequestInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -22,14 +19,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 trait InteractWithApplication
 {
     /**
-     * @var Application
+     * @var Application\Configurator
      */
-    private $app;
-
-    /**
-     * @var Readable
-     */
-    private $schema;
+    private $factory;
 
     /**
      * @return void
@@ -39,14 +31,8 @@ trait InteractWithApplication
         \assert(\property_exists($this, 'kernel') && $this->kernel instanceof KernelInterface,
             'Symfony HttpKernel should be sets up in $this->kernel test class field');
 
-        /** @var ContainerInterface $container */
-        $container = $this->kernel->getContainer();
-
-        /** @var GraphQLController $controller */
-        $controller = $container->get(GraphQLController::class);
-
-        $this->app    = $controller->getApplication();
-        $this->schema = $controller->getSchema();
+        $this->factory = $this->kernel->getContainer()
+            ->get(Application\Configurator::class);
     }
 
     /**
@@ -54,8 +40,7 @@ trait InteractWithApplication
      */
     public function destroyInteractWithApplication(): void
     {
-        $this->app    = null;
-        $this->schema = null;
+        $this->factory  = null;
     }
 
     /**
@@ -63,6 +48,6 @@ trait InteractWithApplication
      */
     protected function app(): TestRequestInterface
     {
-        return $this->appSchema($this->schema, $this->app);
+        return $this->appSchema($this->factory->getSchema(), $this->factory->create());
     }
 }
