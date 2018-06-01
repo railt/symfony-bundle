@@ -34,6 +34,7 @@ services:
         alias: Railt\Io\File
 
     Railt\Foundation\Application\Configurator:
+        factory: ['Railt\Foundation\Application\Configurator', 'getInstance']
         calls:
             - method: setContainer
               arguments: ['@Railt\Container\ContainerInterface']
