@@ -40,9 +40,9 @@ services:
               arguments: ['@Railt\Container\ContainerInterface']
             - method: setDebugMode
               arguments: ['%railt.debug%']
-            - method: addExtensions
+            - method: setExtensions
               arguments: ['%railt.extensions%']
-            - method: addAutoloadPaths
+            - method: setAutoloadPaths
               arguments: ['%railt.autoload%']
             - method: setSchema
               arguments: ['@Railt\Io\Readable']
