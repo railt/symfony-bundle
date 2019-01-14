@@ -51,7 +51,9 @@ services:
         arguments:
             - '@Railt\Container\ContainerInterface'
             - '@Railt\Foundation\Application\Configurator'
+        tags: ['controller.service_arguments']
 
     Railt\SymfonyBundle\Storage\PSR6StorageBridge:
+        public: true
         arguments:
             - '@Psr\Cache\CacheItemPoolInterface'
