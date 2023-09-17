@@ -18,9 +18,9 @@ using [Railt GraphQL](https://github.com/railt/railt).
 
 ## Requirements
 
-- php: ^8.1
-- symfony: ^5.4|^6.0
-- railt/railt: ^2.0
+- php: `^8.1`
+- symfony: `^5.4|^6.0`
+- railt/railt: `^2.0`
 
 ## Installation
 
