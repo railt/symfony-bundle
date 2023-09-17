@@ -1,71 +1,16 @@
-# Symfony Bundle for Railt
-
 <p align="center">
-    <a href="https://travis-ci.org/railt/symfony-bundle"><img src="https://travis-ci.org/railt/symfony-bundle.svg?branch=master&" alt="Travis CI" /></a>
-    <a href="https://scrutinizer-ci.com/g/railt/symfony-bundle/?branch=master"><img src="https://scrutinizer-ci.com/g/railt/symfony-bundle/badges/quality-score.png?b=master&" alt="Scrutinizer CI" /></a>
-    <a href="https://scrutinizer-ci.com/g/railt/symfony-bundle/?branch=master"><img src="https://scrutinizer-ci.com/g/railt/symfony-bundle/badges/coverage.png?b=master&" alt="Code coverage" /></a>
-    <a href="https://packagist.org/packages/railt/symfony-bundle"><img src="https://poser.pugx.org/railt/symfony-bundle/version?" alt="Latest Stable Version"></a>
-    <a href="https://packagist.org/packages/railt/symfony-bundle"><img src="https://poser.pugx.org/railt/symfony-bundle/v/unstable?" alt="Latest Unstable Version"></a>
-    <a href="https://raw.githubusercontent.com/railt/symfony-bundle/master/LICENSE"><img src="https://poser.pugx.org/railt/symfony-bundle/license?" alt="License MIT"></a>
+    <a href="https://railt.org"><img src="https://avatars.githubusercontent.com/u/31258828?s=300" width="150" alt="Railt" /></a>
+</p>
+<p align="center">
+    <a href="https://github.com/railt/symfony-bundle/actions?workflow=Testing"><img src="https://github.com/railt/symfony-bundle/workflows/tests/badge.svg" alt="Testing" /></a>
+    <a href="https://packagist.org/packages/railt/symfony-bundle"><img src="https://img.shields.io/badge/PHP-^8.1-6f4ca5.svg" alt="PHP ^8.1"></a>
+    <a href="https://railt.org"><img src="https://img.shields.io/badge/official-site-6f4ca5.svg" alt="railt.org"></a>
+    <a href="https://discord.gg/ND7SpD4"><img src="https://img.shields.io/badge/discord-chat-6f4ca5.svg" alt="Discord"></a>
+    <a href="https://packagist.org/packages/railt/symfony-bundle"><img src="https://poser.pugx.org/railt/symfony-bundle/version" alt="Latest Stable Version"></a>
+    <a href="https://packagist.org/packages/railt/symfony-bundle"><img src="https://poser.pugx.org/railt/symfony-bundle/downloads" alt="Total Downloads"></a>
+    <a href="https://raw.githubusercontent.com/railt/symfony-bundle/master/LICENSE.md"><img src="https://poser.pugx.org/railt/symfony-bundle/license" alt="License MIT"></a>
 </p>
 
-## About
+## Introduction
 
-The Symfony Framework Bundle for Railt.
-
-## Installation
-
-> Make sure that you are using at least PHP 7.1
-
-1. `composer require railt/symfony-bundle`
-2. Add the `\Railt\SymfonyBundle\RailtBundle::class` into your bundles list.
-3. Add a GraphQL route, like:
-```yml
-app.graphql:
-    resource: "@RailtBundle/Resources/config/routing.yml"
-    prefix: /graphql
-```
-
-> Now you have a GraphQL Server located in `http://localhost/graphql/`
-
-3.1: Or like this:
-```yml
-app.graphql:
-    path: /graphql
-    methods: [ 'GET', 'POST', 'PATCH', 'PUT' ]
-    defaults:
-        _controller: RailtBundle:GraphQL:handle
-```
-
-> Now you have a GraphQL Server located in `http://localhost/graphql`
-
-## Configuration
-
-You can configure your application:
-
-```yml
-railt:
-    # Enable or disable the cache and debug mode
-    # - Optional
-    # - Default: %kernel.debug%
-    debug: '%kernel.debug%'
-
-    # Schema file reference
-    # - Optional
-    # - Default: '@RailtBundle/Resources/graphql/schema.graphqls'
-    schema: '@YourBundle/Resources/graphql/schema.graphqls'
-
-    # Directories where railt will try to load missing type files
-    # - Optional
-    # - Default: []
-    autoload:
-        - '@YourBundle/Resources/graphql/'
-        - '@YourBundle/Resources/graphql/queries/'
-        - '@YourBundle/Resources/graphql/mutations/'
-
-    # Names of extensions (string class name)
-    # - Optional
-    # - Default: []
-    extensions: 
-        - Some/Extension
-``` 
+TODO
