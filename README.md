@@ -335,10 +335,11 @@ railt:
       #
       # Should be instance of `Railt\Foundation\Extension\ExtensionInterface`.
       #
-      # default: [ Railt\Extension\Router\RouterExtension ]
+      # default: []
       #
       extensions:
         - Railt\Extension\Router\RouterExtension
+        - Railt\Extension\DefaultValue\DefaultValueExtension
 
   #
   # List of GraphQL playground (GraphiQL) endpoints.
