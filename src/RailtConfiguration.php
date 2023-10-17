@@ -43,7 +43,6 @@ final class RailtConfiguration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->scalarNode('types')
-                            ->cannotBeEmpty()
                             ->defaultNull()
                         ->end()
                         ->arrayNode('generate')
