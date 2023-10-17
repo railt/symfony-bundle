@@ -235,14 +235,10 @@ final class RailtExtension extends Extension
      */
     private function createSchema(array $config, ContainerBuilder $container): Definition|string
     {
-        if (\is_file($config['schema'])) {
-            return $container->register(\SplFileInfo::class)
-                ->setClass(\SplFileInfo::class)
-                ->addArgument($config['schema'])
-            ;
-        }
-
-        return $config['schema'];
+        return $container->register(\SplFileInfo::class)
+            ->setClass(\SplFileInfo::class)
+            ->addArgument($config['schema'])
+        ;
     }
 
     /**
