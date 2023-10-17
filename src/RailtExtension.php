@@ -62,6 +62,7 @@ final class RailtExtension extends Extension
 
         if ($container->hasParameter('kernel.debug')
             && $container->getParameter('kernel.debug')
+            && $container->hasDefinition(Stopwatch::class)
         ) {
             $container->register(RailtProfiler::class)
                 ->setArgument('$stopwatch', new Reference(Stopwatch::class))
@@ -249,7 +250,7 @@ final class RailtExtension extends Extension
      */
     private function createDictionary(array $config, ContainerBuilder $container): Definition|Reference
     {
-        if ($config['types']) {
+        if (isset($config['types'])) {
             return new Reference($config['types']);
         }
 
